@@ -39,6 +39,13 @@ streamlit run app.py
 
 The processed data is in the repo, so this is enough. To download fresh data and rebuild it (about 170 MB), run `python data/fetch_data.py` before `streamlit run app.py`.
 
+## Documents
+
+- [Report (PDF)](docs/report.pdf): problem, data, cleaning, method, findings and limits.
+- [Storyboard (PDF)](docs/storyboard.pdf): the story section by section, with the chart frames.
+
+Both are built from `docs/*.tex`. Every number in them comes from `docs/numbers.tex`, which `python docs/build_figures.py` writes from the processed data along with the figures.
+
 ## Data
 
 | Dataset | Licence |

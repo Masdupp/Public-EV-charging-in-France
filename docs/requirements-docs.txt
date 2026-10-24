@@ -1,0 +1,2 @@
+# Only needed to rebuild the PDF figures in docs/ (not by the app).
+kaleido==1.0.0

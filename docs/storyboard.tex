@@ -1,0 +1,97 @@
+\documentclass[10pt]{article}
+\usepackage[a4paper,landscape,margin=1.3cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{ragged2e}
+\usepackage[table]{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{caption}
+
+\input{numbers.tex}
+
+\definecolor{ink}{HTML}{0B0B0B}
+\definecolor{muted}{HTML}{000000}
+\definecolor{accent}{HTML}{000000}
+\definecolor{deep}{HTML}{000000}
+\definecolor{band}{HTML}{F2F2F2}
+
+\newcolumntype{L}[1]{>{\RaggedRight\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\RaggedRight\arraybackslash}X}
+\renewcommand{\arraystretch}{1.25}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+
+\newcommand{\arcbox}[3]{%
+  \fcolorbox{accent}{band}{\parbox[t][2.35cm]{0.225\linewidth}{\vspace{2pt}%
+  {\color{deep}\bfseries #1}\\[2pt]{\small\color{muted}#2}\\[3pt]{\small #3}}}}
+
+\begin{document}
+
+{\Large\bfseries\color{deep} Storyboard: public EV charging in France, where it lags and how fast the gap is closing}\\[3pt]
+{\color{muted} Oscar Masdupuy, EFREI Paris, BIA. Data Visualization 2026. Figures from the data of \nBuildDate.} {\small\itshape Formatting with the help of AI.}
+
+\vspace{8pt}
+\begin{tabularx}{\linewidth}{@{}L{3.2cm}Y@{}}
+\textbf{Audience} & Département and regional planners who write or revise a local charging master plan (SDIRVE, created by the 2019 LOM law). \\
+\textbf{Questions} & Where is public charging thin once population and EV ownership are taken into account? Is the gap between départements closing? \\
+\textbf{Hypothesis tested} & Deployment sped up after 2021 but stayed in large metropolitan areas and on motorways, leaving rural départements behind on fast charging. \\
+\textbf{Takeaway} & The first half holds, the second does not. Rural mainland départements are level with dense ones, and the gap is closing. The gaps that remain are overseas and, per car, in dense départements around Paris. \\
+\end{tabularx}
+
+\vspace{6pt}
+\arcbox{1. Hook}{Why it matters}{\nFrPoints{} public points, but \nLowestName{} lists \nLowestPoints{} for \nLowestPop{} people.}\hfill
+\arcbox{2. Context}{Where my area stands}{KPIs and timeline: \nNTwentyTwenty{} dated points in 2020, \nNTwentyTwentyOne{} in 2021, \nPeakN{} in \nPeakYear.}\hfill
+\arcbox{3. Insights}{Where the gaps are}{Rural is not behind; the gap ratio fell from \nConvBefore{} to \nConvAfter; overseas stalls.}\hfill
+\arcbox{4. Implications}{What to do next}{Check overseas data first; on the mainland, look at fast charging in dense areas and at EPCI level.}
+
+\vspace{8pt}
+\small
+\rowcolors{2}{band}{white}
+\begin{tabularx}{\linewidth}{@{}L{0.5cm}L{3.0cm}L{3.6cm}L{3.9cm}YL{3.9cm}@{}}
+\toprule
+\rowcolor{white}
+\textbf{\#} & \textbf{App section} & \textbf{Planner's question} & \textbf{Visual} & \textbf{Headline insight (computed)} & \textbf{Interaction} \\
+\midrule
+1 & Introduction & Why should I look at this? & Title and headline sentence & France lists \nFrPoints{} points, \nFrPerHundredK{} per 100,000 people; the rechargeable fleet grew \nEvFold-fold since \nEvFirstDate. & None: national figures \\
+2 & 1. Overview: KPI header & Where does my area stand? & Five KPI tiles with deltas vs France & France: \nFrPerHundredK{} points per 100k, \nFrPerHundredEv{} per 100 cars, \nFrFastShare\% fast, +\nGrowthPeriod\% since \nStartYear. & Every sidebar filter \\
+3 & 1. Overview: deployment over time & How fast did deployment go? & Stacked cumulative area by power class, four policy dates, period shaded & \nNTwentyTwenty{} dated points in 2020, \nNTwentyTwentyOne{} in 2021, peak of \nPeakN{} in \nPeakYear. & Period, area, power, operator \\
+4 & 2. Where the gaps are & Which départements are thin? & Choropleth (overseas as insets) and top/bottom 10 bars with France line & \nHighestName{} leads with \nHighestPerHundredK{} per 100k; \nNBelowFr{} of \nNDeps{} départements sit below France. & Indicator selector (7 measures), hover \\
+5 & Rural or urban & Are rural areas behind? & Small multiples: one panel per power class, three density bands & Ultra-fast: \nRuralUltra{} points per 100k in rural départements, \nDenseUltra{} in dense ones. & Area filter \\
+6 & Charging vs EV ownership & Is charging keeping up with cars? & Scatter sized by population, AFIR band & \nNBelowAfir{} départements below \nAfirLow{} kW per car; \nDenseLowEvFirst{} has \nDenseLowEvFirstValue{} points per 100 cars. & Hover, data table \\
+7 & Is the gap closing? & Are laggards catching up? & Dumbbell by quarter of départements, years-to-reach table & Best vs least equipped quarter: \nConvBefore{} times in \nPivotYear, \nConvAfter{} times in \nEndMonth. & Period start sets the baseline \\
+8 & Station map & Where exactly are the points? & Point map, \nMapSample{} sampled points & \nUltraDedicatedShare\% of ultra-fast points sit in dedicated fast-charging stations. & Zoom, pan, power class \\
+9 & 3. Data quality & Can I trust these numbers? & Cleaning table, checks, missingness bars & \nDupRemoved{} duplicates removed; \nDateMissingPct\% of points have no commissioning date. & None \\
+10 & 4. Conclusions & What should I do? & Text: insights, implications, next steps & Overseas: \nOverPerHundredK{} points per 100k vs \nMainPerHundredK{} on the mainland. & None: national figures \\
+\bottomrule
+\end{tabularx}
+
+\newpage
+{\Large\bfseries\color{deep} Frames}\quad
+{\color{muted} The charts as they appear in the app with the default filters (all France, period \nStartYear{} to \nEndYear).}
+
+\vspace{4pt}
+\newcommand{\storyframe}[4]{%
+  \begin{minipage}[t]{0.485\linewidth}
+  {\bfseries\color{deep}#1. #2}\par\vspace{2pt}
+  {\centering\includegraphics[width=\linewidth,height=4.25cm,keepaspectratio]{figures/#3}\par}\vspace{1pt}
+  {\footnotesize\color{muted}#4}
+  \end{minipage}}
+
+\storyframe{3}{Deployment over time}{timeline.pdf}{Cumulative dated points by power class. Dotted lines: LOM law, open-data duty, 100,000-point milestone, EU AFIR.}\hfill
+\storyframe{4}{Where the gaps are}{map.pdf}{Points per 100,000 inhabitants. Darker means more. Overseas départements drawn as insets.}
+
+\vspace{6pt}
+\storyframe{4}{Ranking}{ranking.pdf}{Lowest and highest 10 départements, dashed line at the France value (\nFrPerHundredK).}\hfill
+\storyframe{5}{Rural or urban}{density.pdf}{Points per 100,000 inhabitants by density band, one panel per power class.}
+
+\vspace{6pt}
+\storyframe{6}{Charging vs EV ownership}{scatter.pdf}{kW of public power per rechargeable car against cars per 1,000 inhabitants. Grey band: AFIR references.}\hfill
+\storyframe{7}{Is the gap closing?}{convergence.pdf}{Dated points per 100,000 inhabitants, end of \nPivotYear{} (light) and \nEndMonth{} (dark), by quarter of départements.}
+
+\end{document}

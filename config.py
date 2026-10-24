@@ -167,4 +167,5 @@ POWER_COLORS[UNKNOWN_POWER] = "#a3a29c"
 ACCENT = "#2a78d6"
 ACCENT_2 = "#eb6834"      # second categorical slot, used for "France average" marks
 MUTED = "#52514e"
+PERIOD_SHADE = "#86b6ef"   # background band for the selected period on the timeline
 SEQUENTIAL_SCALE = ["#cde2fb", "#9ec5f4", "#6da7ec", "#3987e5", "#256abf", "#184f95", "#0d366b"]

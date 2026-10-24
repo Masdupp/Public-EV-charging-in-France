@@ -113,15 +113,16 @@ def timeline(cum: pd.DataFrame, start: pd.Timestamp, end: pd.Timestamp, height: 
         if s.empty or s["cumulative"].max() == 0:
             continue
         fig.add_trace(go.Scatter(
-            x=s["month"], y=s["cumulative"], name=cls, mode="lines", stackgroup="one",
+            x=s["month"].dt.strftime("%Y-%m-%d"), y=s["cumulative"], name=cls, mode="lines", stackgroup="one",
             line=dict(width=0.5, color="white"), fillcolor=C.POWER_COLORS[cls],
             hovertemplate=f"{cls}: %{{y:,.0f}}<extra></extra>"))
     total = cum.groupby("month")["cumulative"].sum().reset_index()
     if not total.empty:
-        fig.add_trace(go.Scatter(x=total["month"], y=total["cumulative"], name="All dated points",
+        fig.add_trace(go.Scatter(x=total["month"].dt.strftime("%Y-%m-%d"), y=total["cumulative"], name="All dated points",
                                  mode="lines", line=dict(color=TEXT, width=2),
                                  hovertemplate="All dated points: %{y:,.0f}<extra></extra>"))
-    fig.add_vrect(x0=start, x1=end, fillcolor="#86b6ef", opacity=0.14, line_width=0,
+    iso = lambda ts: pd.Timestamp(ts).strftime("%Y-%m-%d")  # noqa: E731  (plain strings serialise as dates)
+    fig.add_vrect(x0=iso(start), x1=iso(end), fillcolor=C.PERIOD_SHADE, opacity=0.14, line_width=0,
                   annotation_text="Selected period", annotation_position="bottom left",
                   annotation_font=dict(color=TEXT_2, size=11))
     if not total.empty:
@@ -130,15 +131,15 @@ def timeline(cum: pd.DataFrame, start: pd.Timestamp, end: pd.Timestamp, height: 
             d = pd.Timestamp(ev["date"])
             if d < x0:
                 continue
-            fig.add_vline(x=d, line_dash="dot", line_color=TEXT_2, line_width=1.2)
-            fig.add_annotation(x=d, y=1 - 0.09 * (k % 3) - 0.08, yref="paper", text=ev["label"],
+            fig.add_vline(x=iso(d), line_dash="dot", line_color=TEXT_2, line_width=1.2)
+            fig.add_annotation(x=iso(d), y=1 - 0.09 * (k % 3) - 0.08, yref="paper", text=ev["label"],
                                showarrow=False, xanchor="right", xshift=-4,
                                font=dict(color=TEXT, size=11), bgcolor="rgba(255,255,255,0.85)")
     if not total.empty:
         x_start = max(total["month"].min(), pd.Timestamp("2014-01-01"))
         if x_start < total["month"].max():
-            fig.update_xaxes(range=[x_start, total["month"].max() + pd.Timedelta(days=31)])
-    fig.update_xaxes(title_text="Commissioning date (month)")
+            fig.update_xaxes(range=[iso(x_start), iso(total["month"].max() + pd.Timedelta(days=31))])
+    fig.update_xaxes(title_text="Commissioning date (month)", type="date")
     fig.update_yaxes(title_text="Cumulative dated charging points (count)", rangemode="tozero")
     fig = _style(fig, height=height)
     fig.update_layout(hovermode="x unified")
@@ -159,10 +160,10 @@ def yearly_bars(y: pd.Series, partial_year: int | None, partial_label: str) -> g
 
 def ev_stock(ev: pd.DataFrame) -> go.Figure:
     s = ev.groupby("date")["ev"].sum().reset_index()
-    fig = go.Figure(go.Scatter(x=s["date"], y=s["ev"], mode="lines+markers", line=dict(color=C.ACCENT, width=2),
+    fig = go.Figure(go.Scatter(x=s["date"].dt.strftime("%Y-%m-%d"), y=s["ev"], mode="lines+markers", line=dict(color=C.ACCENT, width=2),
                                marker=dict(size=8, color=C.ACCENT, line=dict(color="white", width=2)),
                                hovertemplate="%{x|%d %b %Y}: %{y:,.0f} cars<extra></extra>"))
-    fig.update_xaxes(title_text="Date of the register snapshot (quarterly)")
+    fig.update_xaxes(title_text="Date of the register snapshot (quarterly)", type="date")
     fig.update_yaxes(title_text="Rechargeable cars registered (count)", rangemode="tozero")
     return _style(fig, height=340, legend=False)
 
